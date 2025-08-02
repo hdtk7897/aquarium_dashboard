@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+
+declare global {
+  interface Window {
+    __selectedTimeGroup: number;
+  }
+}
 
 function CustomTooltip({ active, payload }: any) {
   // timeGroupをAppのstateから取得
@@ -34,7 +38,6 @@ function convertDateToUnixtime(date: Date): number {
 }
 
 function App() {
-  const [count, setCount] = useState(0)
   const [aquaenv, setAquaenv] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -49,8 +52,6 @@ function App() {
 
   // fanSwがONのときだけwaterTempを持つデータ
   const waterTempRed = aquaenv.map(row => row.fanSw === 'ON' ? { ...row } : { ...row, waterTemp: null })
-  // fanSwがON以外のときだけwaterTempを持つデータ
-  const waterTempBlue = aquaenv.map(row => row.fanSw !== 'ON' ? { ...row } : { ...row, waterTemp: null })
 
   useEffect(() => {
     setLoading(true)
@@ -69,7 +70,7 @@ function App() {
         setAquaenv(data.data?.aquaenv || [])
         setLoading(false)
       })
-      .catch(err => {
+      .catch(() => {
         setError('データ取得に失敗しました')
         setLoading(false)
       })
