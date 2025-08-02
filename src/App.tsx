@@ -55,7 +55,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true)
-    fetch('http://hanpen.f5.si:8000/graphql', {
+    fetch('https://hanpen.f5.si/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
