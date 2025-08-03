@@ -1,5 +1,10 @@
 ###
-POST http://hanpen.f5.si:8000/graphql
+GET https://hanpen.f5.si/mjpeg
+Content-Type: application/json
+
+
+###
+POST https://hanpen.f5.si/graphql
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
