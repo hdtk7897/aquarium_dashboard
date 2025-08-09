@@ -80,6 +80,16 @@ function App() {
     <>
       <h1>Aquarium Dashboard</h1>
       <div>
+        {/* MJPEGストリーム表示 */}
+        <div style={{ marginTop: 24 }}>
+          <h2>ライブ映像</h2>
+          <img
+            src="https://hanpen.f5.si/mjpeg"
+            alt="Aquarium Live Stream"
+            style={{ width: '100%', maxWidth: 640, border: '1px solid #ccc' }}
+          />
+        </div>
+
         <div style={{ marginBottom: 16 }}>
           <label style={{ marginRight: 16 }}>
             開始日時:
@@ -112,26 +122,7 @@ function App() {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {!loading && !error && (
-          <>
-            {/* MJPEGストリーム表示 */}
-            {/* <div style={{ marginTop: 24 }}>
-              <h2>ライブ映像</h2>
-              <img
-                src="https://hanpen.f5.si/mjpeg"
-                alt="Aquarium Live Stream"
-                style={{ width: '100%', maxWidth: 640, border: '1px solid #ccc' }}
-              />
-            </div> */}
-            
-            {/* MJPEGストリーム表示 */}
-            <div style={{ marginTop: 24 }}>
-              <h2>ライブ映像</h2>
-              <img
-                src="https://hanpen.f5.si/mjpeg"
-                alt="Aquarium Live Stream"
-                style={{ width: '100%', maxWidth: 640, border: '1px solid #ccc' }}
-              />
-            </div>
+          <>            
             <div style={{ width: '100%', height: 300 }}>
               <ResponsiveContainer>
                 <LineChart data={aquaenv} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
@@ -140,7 +131,7 @@ function App() {
                     dataKey="unitTime"
                     tickFormatter={tick => convertUnitTimeToDate(tick, timeGroup)}
                   />
-                  <YAxis />
+                  <YAxis domain={[10, 35]}/>
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
                   <Line type="monotone" dataKey="airTemp" stroke="#e98e25ff" name="Air Temp" />
