@@ -88,36 +88,43 @@ function App() {
             alt="Aquarium Live Stream"
             style={{ width: '100%', maxWidth: 640, border: '1px solid #ccc' }}
           />
+          
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <label style={{ marginRight: 16 }}>
-            開始日時:
-            <input
-              type="datetime-local"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              style={{ marginLeft: 8 }}
-            />
-          </label>
-          <label style={{ marginRight: 16 }}>
-            終了日時:
-            <input
-              type="datetime-local"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-              style={{ marginLeft: 8 }}
-            />
-          </label>
-          <label>
-            timeGroup:
-            <select value={timeGroup} onChange={e => setTimeGroup(Number(e.target.value))} style={{ marginLeft: 8 }}>
-              <option value={0}>0</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={30}>30</option>
-            </select>
-          </label>
+          <div>
+            <label style={{ marginRight: 16 }}>
+              開始日時:
+              <input
+                type="datetime-local"
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+                style={{ marginLeft: 8 }}
+              />
+            </label>
+          </div>
+          <div>
+            <label style={{ marginRight: 16 }}>
+              終了日時:
+              <input
+                type="datetime-local"
+                value={endDate}
+                onChange={e => setEndDate(e.target.value)}
+                style={{ marginLeft: 8 }}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              timeGroup:
+              <select value={timeGroup} onChange={e => setTimeGroup(Number(e.target.value))} style={{ marginLeft: 8 }}>
+                <option value={0}>10秒ごと</option>
+                <option value={10}>1分ごと</option>
+                <option value={20}>半日ごと</option>
+                <option value={30}>1日ごと</option>
+              </select>
+            </label>
+          </div>
         </div>
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
