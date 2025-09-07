@@ -118,9 +118,9 @@ function App() {
             <label>
               timeGroup:
               <select value={timeGroup} onChange={e => setTimeGroup(Number(e.target.value))} style={{ marginLeft: 8 }}>
-                <option value={0}>10秒ごと</option>
-                <option value={10}>1分ごと</option>
-                <option value={20}>半日ごと</option>
+                <option value={0}>10分ごと</option>
+                <option value={10}>1時間ごと</option>
+                <option value={20}>6時間ごと</option>
                 <option value={30}>1日ごと</option>
               </select>
             </label>
