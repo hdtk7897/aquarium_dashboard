@@ -83,12 +83,44 @@ function App() {
         {/* MJPEGストリーム表示 */}
         <div style={{ marginTop: 24 }}>
           <h2>ライブ映像</h2>
-          <img
+          {/* <img
             src="https://hanpen.f5.si/mjpeg"
             alt="Aquarium Live Stream"
             style={{ width: '100%', maxWidth: 640, border: '1px solid #ccc' }}
-          />
-          
+          /> */}
+          		<div class="stream">
+			<!-- Use the img tag to show MJPEG stream directly in the browser -->
+			<img id="mjpeg" src="/mjpeg" width="640" height="480" alt="MJPEG stream" />
+		</div>
+
+		<div class="controls">
+			<button id="reload">Reload Stream</button>
+			<label style="margin-left:12px">Stream URL: <code id="url">/mjpeg</code></label>
+		</div>
+
+		<script>
+			const img = document.getElementById('mjpeg');
+			const reload = document.getElementById('reload');
+			const urlEl = document.getElementById('url');
+
+			reload.addEventListener('click', () => {
+				// force the browser to re-request the MJPEG stream
+				const url = '/mjpeg?ts=' + Date.now();
+				img.src = url;
+				urlEl.textContent = url;
+			});
+
+			// Provide a simple visibility handler to stop reloading when tab hidden
+			document.addEventListener('visibilitychange', () => {
+				if (document.hidden) {
+					// pause by pointing to a small blank image
+					img.dataset.prev = img.src;
+					img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+				} else {
+					img.src = img.dataset.prev || '/mjpeg';
+				}
+			});
+		</script>
         </div>
 
         <div style={{ marginBottom: 16 }}>
