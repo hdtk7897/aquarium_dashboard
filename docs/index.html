@@ -1,55 +1,14 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Aquarium MJPEG Sample</title>
-		<style>
-			body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 20px; }
-			.stream { border: 1px solid #ccc; display: inline-block; }
-			.controls { margin-top: 12px; }
-		</style>
-	</head>
-	<body>
-		<h1>Aquarium MJPEG Stream (sample)</h1>
-
-		<p>
-			This page demonstrates how to embed the MJPEG stream served at
-			<code>/mjpeg</code> (FastAPI endpoint).
-		</p>
-
-		<div class="stream">
-			<!-- Use the img tag to show MJPEG stream directly in the browser -->
-			<img id="mjpeg" src="/mjpeg" width="640" height="480" alt="MJPEG stream" />
-		</div>
-
-		<div class="controls">
-			<button id="reload">Reload Stream</button>
-			<label style="margin-left:12px">Stream URL: <code id="url">/mjpeg</code></label>
-		</div>
-
-		<script>
-			const img = document.getElementById('mjpeg');
-			const reload = document.getElementById('reload');
-			const urlEl = document.getElementById('url');
-
-			reload.addEventListener('click', () => {
-				// force the browser to re-request the MJPEG stream
-				const url = '/mjpeg?ts=' + Date.now();
-				img.src = url;
-				urlEl.textContent = url;
-			});
-
-			// Provide a simple visibility handler to stop reloading when tab hidden
-			document.addEventListener('visibilitychange', () => {
-				if (document.hidden) {
-					// pause by pointing to a small blank image
-					img.dataset.prev = img.src;
-					img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-				} else {
-					img.src = img.dataset.prev || '/mjpeg';
-				}
-			});
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/aquarium_dashboard/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+    <script type="module" crossorigin src="/aquarium_dashboard/assets/index-Dpz4hPwp.js"></script>
+    <link rel="stylesheet" crossorigin href="/aquarium_dashboard/assets/index-D8b4DHJx.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
