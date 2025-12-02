@@ -1,10 +1,12 @@
+"use client"
+import Image from "next/image";
 import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import './App.css'
+// import './App.css'
 
 declare global {
   interface Window {
-    __selectedTimeGroup: number;
+    __selectedTimeGroup?: number;
   }
 }
 
@@ -15,7 +17,7 @@ function CustomTooltip({ active, payload }: any) {
     const data = payload[0].payload;
     return (
       <div style={{ background: '#fff', border: '1px solid #ccc', padding: 10, color: '#000' }}>
-        <div><strong>Date:</strong> {convertUnitTimeToDate(data.unitTime, timeGroup)}</div>
+        <div><strong>Date:</strong> {data.unitTime !== undefined ? convertUnitTimeToDate(data.unitTime, timeGroup) : 'N/A'}</div>
         <div><strong>Air Temp:</strong> {data.airTemp}</div>
         <div><strong>Water Temp:</strong> {data.waterTemp}</div>
       </div>
@@ -37,12 +39,23 @@ function convertDateToUnixtime(date: Date): number {
   return Math.floor(date.getTime() / 1000);
 }
 
-function App() {
-  const [aquaenv, setAquaenv] = useState<any[]>([])
+interface AquaEnv {
+  id: string;
+  date: string;
+  time: string;
+  unixtime: number;
+  unitTime: number;
+  airTemp: number;
+  waterTemp: number | null;
+  timeGroup: number;
+  fanSw: string;
+}
+
+export default function Home() {
+  const [aquaenv, setAquaenv] = useState<AquaEnv[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [timeGroup, setTimeGroup] = useState(10)
-  window.__selectedTimeGroup = timeGroup
   const pad = (n: number) => n.toString().padStart(2, '0');
   const formatDateTimeLocal = (date: Date, before:number) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate()-before)}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
   const [startDate, setStartDate] = useState(formatDateTimeLocal(new Date(), 1));
@@ -65,8 +78,8 @@ function App() {
         query: `query { aquaenv(startAt:${startAt}, endAt:${endAt}, timeGroup:${timeGroup}) { id date time unixtime unitTime airTemp waterTemp timeGroup fanSw } }`
       })
     })
-      .then(res => res.json())
-      .then(data => {
+      .then(res => res.json() as Promise<{ data?: { aquaenv?: AquaEnv[] } }>)
+      .then((data) => {
         setAquaenv(data.data?.aquaenv || [])
         setLoading(false)
       })
@@ -75,6 +88,7 @@ function App() {
         setLoading(false)
       })
   }, [timeGroup, startDate, endDate])
+
 
   return (
     <>
@@ -154,5 +168,3 @@ function App() {
     </>
   )
 }
-
-export default App
