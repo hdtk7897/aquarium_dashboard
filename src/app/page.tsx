@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image";
 import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 // import './App.css'
@@ -10,9 +9,14 @@ declare global {
   }
 }
 
-function CustomTooltip({ active, payload }: any) {
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{ payload: AquaEnv }>;
+}
+
+function CustomTooltip({ active, payload }: TooltipProps) {
   // timeGroupをAppのstateから取得
-  const timeGroup = window.__selectedTimeGroup;
+  const timeGroup = window.__selectedTimeGroup ?? 10;
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -68,11 +72,10 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true)
-    fetch('https://hanpen.f5.si/graphql', {
+    fetch('/api/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-REQUEST-TYPE': 'GraphQL',
       },
       body: JSON.stringify({
         query: `query { aquaenv(startAt:${startAt}, endAt:${endAt}, timeGroup:${timeGroup}) { id date time unixtime unitTime airTemp waterTemp timeGroup fanSw } }`
@@ -87,7 +90,7 @@ export default function Home() {
         setError('データ取得に失敗しました')
         setLoading(false)
       })
-  }, [timeGroup, startDate, endDate])
+  }, [timeGroup, startDate, endDate, startAt, endAt])
 
 
   return (
@@ -97,8 +100,9 @@ export default function Home() {
         {/* MJPEGストリーム表示 */}
         <div style={{ marginTop: 24 }}>
           <h2>ライブ映像</h2>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://hanpen.f5.si/mjpeg"
+            src="/api/mjpeg"
             alt="Aquarium Live Stream"
             style={{ width: '100%', maxWidth: 640, border: '1px solid #ccc' }}
           />
