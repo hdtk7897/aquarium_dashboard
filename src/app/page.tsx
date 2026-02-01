@@ -61,7 +61,10 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [timeGroup, setTimeGroup] = useState(10)
   const pad = (n: number) => n.toString().padStart(2, '0');
-  const formatDateTimeLocal = (date: Date, before:number) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate()-before)}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  const formatDateTimeLocal = ((target: Date, before:number) => {
+    target = new Date(target.getTime() - before * 24 * 60 * 60 * 1000);
+    return `${target.getFullYear()}-${pad(target.getMonth() + 1)}-${pad(target.getDate()-before)}T${pad(target.getHours())}:${pad(target.getMinutes())}`;
+  })
   const [startDate, setStartDate] = useState(formatDateTimeLocal(new Date(), 1));
   const [endDate, setEndDate] = useState(formatDateTimeLocal(new Date(), 0));
   const startAt = convertDateToUnixtime(new Date(startDate))
@@ -136,8 +139,8 @@ export default function Home() {
             <label>
               timeGroup:
               <select value={timeGroup} onChange={e => setTimeGroup(Number(e.target.value))} style={{ marginLeft: 8 }}>
-                <option value={0}>10秒ごと</option>
-                <option value={10}>1分ごと</option>
+                <option value={0}>1分ごと</option>
+                <option value={10}>1時間ごと</option>
                 <option value={20}>半日ごと</option>
                 <option value={30}>1日ごと</option>
               </select>
